@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+          @import url(./reset.css);
+          .play{width: 500px;margin: 50px auto;position: absolute;}
+          .big_pic img{width: 490px;height: 490px;position:absolute;margin: 5px 0 0 5px;}
+          .big_pic li{width: 490px;height: 490px;position:absolute;z-index: 1;}
+          .big_pic{border:1px solid black;height: 500px;}
+          .text{position: absolute;top:480px;left:5px;z-index: 2;font-size: 3px;}
+          .length {position: absolute;top: 480px;left: 410px;font-size: 3px;z-index: 3;}
+          .small_pic img{width: 100px;height: 100px;opacity: 0.5;}
+          .small_pic li img{opacity: 1;}
+          .big_pic .prev{width: 100px;height: 100px;background-image: url(./images/left.png);position: absolute;z-index: 2;top: 150px;left: 0;opacity: 0;}
+           .big_pic .next{width: 100px;height: 100px;background-image: url(./images/right.png);position: absolute;z-index: 2;top: 180px;left: 340px;opacity: 0;}
+          .big_pic .left{position: absolute;width: 250px;height: 500px;background: #ccc;z-index: 3;opacity: 0;}
+          .big_pic .right{position: absolute;left:250px;width: 250px;height: 500px;background: #ccc;z-index: 3;opacity: 0;}
+        </style>
+        <script src="./move.js"></script>
+        <script>
+            
+          function getByClass(oParent,cName)
+          {
+              var oPar=document.getElementById(oParent);
+              var oClass=oPar.getElementsByTagName('*');
+              var i=0;
+              var aResult=[];
+              for(i=0;i<oClass.length;i++)
+              {
+                  if(oClass[i].className==cName)
+                  {
+                     aResult.push(oClass[i]);
+                  }
+              }
+            return aResult;
+          }
+          /*功能区  函数库  表示当前工作状态的i值*/
+          window.onload=function()
+          {
+              var oL=getByClass('playimages','left')[0];
+              var oR=getByClass('playimages','right')[0];
+               var oPrev=getByClass('playimages','prev')[0];
+              var oNext=getByClass('playimages','next')[0];
+              var oSmall=getByClass('playimages','small_pic')[0];
+              var oImgS=oSmall.getElementsByTagName('img');
+              var oUl=document.getElementById('ul1');
+              var oImgB=oUl.getElementsByTagName('img');
+              var oLi=oUl.getElementsByTagName('li')[0];
+              var i=0;
+              var minIndex=3;
+              oL.onmouseover=function()
+              {
+                  sMove(oPrev,'opacity',100);
+              }
+              oL.onmouseout=function()
+              {
+                  sMove(oPrev,'opacity',0)
+              }
+              oR.onmouseover=function()
+              {
+                  sMove(oNext,'opacity',100);
+              }
+              oR.onmouseout=function()
+              {
+                  sMove(oNext,'opacity',0)
+              }
+              for(i=0;i<oImgS.length;i++)
+              {
+                  oImgS[i].onmouseover=function()
+                  {
+                      
+                      for(i=0;i<oImgS.length;i++)
+                      {
+                          oImgS[i].index=i;
+                          oImgS[i].style.opacity=sMove(oImgS[i],'opacity',60)
+                      }
+                      this.style.opacity=sMove(this,'opacity',100);
+                      minIndex+=1;
+                      console.log(minIndex);
+                      oImgB[this.index].style.zIndex=minIndex;
+                      if(this.index==0)
+                      {
+                           oLi.style.zIndex=minIndex;
+                      }
+                      oImgB[this.index].style.height=0;
+                      sMove(oImgB[this.index],'height',490);
+                      oL.style.zIndex=minIndex+1;
+                      oR.style.zIndex=minIndex+1;
+                      oPrev.style.zIndex=minIndex+1;
+                      oNext.style.zIndex=minIndex+1;
+                  }
+                  
+              }
+          }
+        </script>
+    </head>
+    <body>
+       <div id="playimages" class="play">
+         <ul class="big_pic" id="ul1">
+           <div class="prev"></div>
+           <div class="next"></div>
+
+           <div class="text">加载图片说明</div>
+           <div class="length">计算图片数量</div>
+
+           <a class="left" href="jacascript:;"></a>
+           <a class="right" href="jacascript:;"></a>
+           <div class="bg"></div>
+
+           <li><img src="./images/1.jpg" alt=""></li>
+           <img src="./images/2.jpg" alt="">
+           <img src="./images/3.jpg" alt="">
+           <img src="./images/4.jpg" alt="">
+           <img src="./images/5.jpg" alt="">
+         </ul>
+         <div class="small_pic">
+             <ul style="width:390px;">
+                 <li style="opacity:1"><img src="./images/1.jpg" alt=""></li>
+                 <img src="./images/2.jpg" alt="">
+                 <img src="./images/3.jpg" alt="">
+                 <img src="./images/4.jpg" alt="">
+                 <img src="./images/5.jpg" alt="">
+             </ul>
+         </div>
+       </div>
+    </body>
+</html>
